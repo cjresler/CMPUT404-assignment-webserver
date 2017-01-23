@@ -38,7 +38,6 @@ class MyWebServer(SocketServer.BaseRequestHandler):
     requestHeader = []
     responseHeader = ""
     body = ""
-    tPath = ""
 
     def handleFile(self, path):
         #Open file, excluding leading '/'
@@ -86,7 +85,6 @@ class MyWebServer(SocketServer.BaseRequestHandler):
             self.responseHeader += "HTTP/1.1 404 NOT FOUND\r\n"
             self.responseHeader += "Content-Type: text/html;\r\n"
             self.body = "<html><head></head><body><h1>404 NOT FOUND</h1></body></html>"
-        self.tPath = path
 
     def handle(self):
         self.data = self.request.recv(1024).strip()
@@ -104,9 +102,6 @@ class MyWebServer(SocketServer.BaseRequestHandler):
         self.responseHeader += currentTime;
         #Send header and body
         self.request.sendall(self.responseHeader + "\r\n" + self.body)
-
-        #Print information that looks like what SimpleHTTPServer does
-        print(self.client_address[0] + " - " + currentTime[:-4] + " - " + self.tPath)
 
 if __name__ == "__main__":
     HOST, PORT = "localhost", 8080
